@@ -5,13 +5,16 @@ version: 2.2.0+3
 
 environment:
   sdk: '>=3.10.0 <4.0.0'
-  flutter: '>=3.38.0'
 
 dependencies:
   flutter:
     sdk: flutter
   file_picker: ^10.3.7
   offline_document_viewer: ^0.1.0
+  flutter_inappwebview: ^6.2.0-beta.3
+
+dependency_overrides:
+  flutter_inappwebview: ^6.2.0-beta.3
 
 dev_dependencies:
   flutter_test:
