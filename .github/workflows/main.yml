@@ -1,4 +1,4 @@
-name: Build DualView Android APK
+name: DualView APK Builder
 
 on:
   workflow_dispatch:
@@ -6,39 +6,40 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Download project files
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - name: Set up Flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
-      - name: Prepare Flutter project
-        run: |
-          mkdir -p lib
-          if [ -f main.dart ]; then mv main.dart lib/main.dart; fi
-          flutter create --platforms=android --org com.dualview .
+      - name: Generate Android configuration
+        run: flutter create --platforms=android --org com.dualview .
 
-      - name: Get dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build APK
+      - name: Check Flutter project
+        run: flutter analyze
+
+      - name: Build DualView APK
         run: flutter build apk --release
 
-      - name: Upload APK
+      - name: Upload finished APK
         uses: actions/upload-artifact@v4
         with:
-          name: dualview-release-apk
+          name: DualView-Android-APK
           path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 7
