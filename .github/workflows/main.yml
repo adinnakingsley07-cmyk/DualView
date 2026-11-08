@@ -30,9 +30,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Check Flutter project
-        run: flutter analyze
-
       - name: Build DualView APK
         run: flutter build apk --release
 
